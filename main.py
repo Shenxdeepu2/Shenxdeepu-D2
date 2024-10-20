@@ -116,15 +116,13 @@ def start(message):
         bot.send_message(message.chat.id, "🚫 Access Denied! bhai mere se baat kr le: @MRSHENXDEEPU")
     else:
         welcome_message = (
-           🎮 **Welcome to Apni nasedi bot !** 🚀
+           "🎮 **Welcome to Apni nasedi bot !** 🚀\n\n"
 apko pta hi hoga hum h don
-Use /attack `<IP>:<port>` to start an attack, or /stop to halt your attack.
+"Use /attack `<IP>:<port>` to start an attack, or /stop to halt your attack.\n\n"
 
-📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU
-☠️ To see the Telegram Bot Command type: /help👤 To find your user ID type: /id
-            "📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU\n"
-            "☠️ To see the Telegram Bot Command type: /help"
-            "👤 To find your user ID type: /id"
+"📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU\n"
+         "☠️ To see the Telegram Bot Command type: /help
+         "👤 To find your user ID type: /id''       
         )
         bot.send_message(message.chat.id, welcome_message)
 
