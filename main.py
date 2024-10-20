@@ -45,12 +45,6 @@ bot = telebot.TeleBot(TOKEN, threaded=False)
 # 🛡️ List of authorized user IDs (replace with actual IDs)
 AUTHORIZED_USERS = [6200422210]
 
-# Admin user IDs
-admin_id = ["6200422210"]
-
-# File to store allowed user IDs
-USER_FILE = "users.txt"# Admin user IDs
-
 # 🌐 Global dictionary to keep track of user attacks
 user_attacks = {}
 
@@ -85,150 +79,6 @@ def start_udp_flood(user_id, target_ip, target_port):
         process.start()
         processes.append(process)
 
-# Dictionary to store the approval expiry date for each user
-user_approval_expiry = {}
-
-# Function to calculate remaining approval time
-def get_remaining_approval_time(user_id):
-    expiry_date = user_approval_expiry.get(user_id)
-    if expiry_date:
-        remaining_time = expiry_date - datetime.datetime.now()
-        if remaining_time.days < 0:
-            return "Expired"
-        else:
-            return str(remaining_time)
-    else:
-        return "N/A"
-
-# Function to add or update user approval expiry date
-def set_approval_expiry_date(user_id, duration, time_unit):
-    current_time = datetime.datetime.now()
-    if time_unit == "hour" or time_unit == "hours":
-        expiry_date = current_time + datetime.timedelta(hours=duration)
-    elif time_unit == "day" or time_unit == "days":
-        expiry_date = current_time + datetime.timedelta(days=duration)
-    elif time_unit == "week" or time_unit == "weeks":
-        expiry_date = current_time + datetime.timedelta(weeks=duration)
-    elif time_unit == "month" or time_unit == "months":
-        expiry_date = current_time + datetime.timedelta(days=30 * duration)  # Approximation of a month
-    else:
-        return False
-    
-    user_approval_expiry[user_id] = expiry_date
-    return True
-
-# Command handler for adding a user with approval time
-@bot.message_handler(commands=['add'])
-def add_user(message):
-    user_id = str(message.chat.id)
-    if user_id in admin_id:
-        command = message.text.split()
-        if len(command) > 2:
-            user_to_add = command[1]
-            duration_str = command[2]
-
-            try:
-                duration = int(duration_str[:-4])  # Extract the numeric part of the duration
-                if duration <= 0:
-                    raise ValueError
-                time_unit = duration_str[-4:].lower()  # Extract the time unit (e.g., 'hour', 'day', 'week', 'month')
-                if time_unit not in ('hour', 'hours', 'day', 'days', 'week', 'weeks', 'month', 'months'):
-                    raise ValueError
-            except ValueError:
-                response = "Invalid duration format. Please provide a positive integer followed by 'hour(s)', 'day(s)', 'week(s)', or 'month(s)'."
-                bot.reply_to(message, response)
-                return
-
-            if user_to_add not in allowed_user_ids:
-                allowed_user_ids.append(user_to_add)
-                with open(USER_FILE, "a") as file:
-                    file.write(f"{user_to_add}\n")
-                if set_approval_expiry_date(user_to_add, duration, time_unit):
-                    response = f"User {user_to_add} added successfully for {duration} {time_unit}. Access will expire on {user_approval_expiry[user_to_add].strftime('%Y-%m-%d %H:%M:%S')} 👍."
-                else:
-                    response = "Failed to set approval expiry date. Please try again later."
-            else:
-                response = "User already exists 🤦‍♂️."
-        else:
-            response = "Please specify a user ID and the duration (e.g., 1hour, 2days, 3weeks, 4months) to add 😘."
-    else:
-        response = "You have not purchased yet purchase now from:- @MRSHENXDEEPU."
-
-    bot.reply_to(message, response)
-
-# Command handler for retrieving user info
-@bot.message_handler(commands=['myinfo'])
-def get_user_info(message):
-    user_id = str(message.chat.id)
-    user_info = bot.get_chat(user_id)
-    username = user_info.username if user_info.username else "N/A"
-    user_role = "Admin" if user_id in admin_id else "User"
-    remaining_time = get_remaining_approval_time(user_id)
-    response = f"👤 Your Info:\n\n🆔 User ID: <code>{user_id}</code>\n📝 Username: {username}\n🔖 Role: {user_role}\n📅 Approval Expiry Date: {user_approval_expiry.get(user_id, 'Not Approved')}\n⏳ Remaining Approval Time: {remaining_time}"
-    bot.reply_to(message, response, parse_mode="HTML")
-
-
-
-@bot.message_handler(commands=['remove'])
-def remove_user(message):
-    user_id = str(message.chat.id)
-    if user_id in admin_id:
-        command = message.text.split()
-        if len(command) > 1:
-            user_to_remove = command[1]
-            if user_to_remove in allowed_user_ids:
-                allowed_user_ids.remove(user_to_remove)
-                with open(USER_FILE, "w") as file:
-                    for user_id in allowed_user_ids:
-                        file.write(f"{user_id}\n")
-                response = f"User {user_to_remove} removed successfully 👍."
-            else:
-                response = f"User {user_to_remove} not found in the list ❌."
-        else:
-            response = '''Please Specify A User ID to Remove. 
-✅ Usage: /remove <userid>'''
-    else:
-        response = "You have not purchased yet purchase now from:- @MESHENXDEEPU 🙇."
-
-    bot.reply_to(message, response)
-
-@bot.message_handler(commands=['clearlogs'])
-def clear_logs_command(message):
-    user_id = str(message.chat.id)
-    if user_id in admin_id:
-        try:
-            with open(LOG_FILE, "r+") as file:
-                log_content = file.read()
-                if log_content.strip() == "":
-                    response = "Logs are already cleared. No data found ❌."
-                else:
-                    file.truncate(0)
-                    response = "Logs Cleared Successfully ✅"
-        except FileNotFoundError:
-            response = "Logs are already cleared ❌."
-    else:
-        response = "You have not purchased yet purchase now from :- @MRSHENXDEEPU ❄."
-    bot.reply_to(message, response)
-
-
-@bot.message_handler(commands=['clearusers'])
-def clear_users_command(message):
-    user_id = str(message.chat.id)
-    if user_id in admin_id:
-        try:
-            with open(USER_FILE, "r+") as file:
-                log_content = file.read()
-                if log_content.strip() == "":
-                    response = "USERS are already cleared. No data found ❌."
-                else:
-                    file.truncate(0)
-                    response = "users Cleared Successfully ✅"
-        except FileNotFoundError:
-            response = "users are already cleared ❌."
-    else:
-        response = " ꜰʀᴇᴇ ᴍᴀɪ ᴋᴜᴄʜ ɴʜɪ ᴍɪʟᴛᴀ ʙᴜʏ:- @MRSHENXDEEPU 🙇."
-    bot.reply_to(message, response)
- 
     # Store processes and stop flag for the user
     user_attacks[user_id] = (processes, stop_flag)
     bot.send_message(user_id, f"☢️bhai attack chalu ho gya h  {target_ip}:{target_port} 💀")
@@ -266,11 +116,21 @@ def start(message):
         bot.send_message(message.chat.id, "🚫 Access Denied! bhai mere se baat kr le: @MRSHENXDEEPU")
     else:
         welcome_message = (
-            "🎮 **Welcome to Apni nasedi bot !** 🚀\n\n"
-             "apko pta hi ho hum h don"
+            "🎮 **Welcome to the Ultimate Attack Bot!** 🚀\n\n"
             "Use /attack `<IP>:<port>` to start an attack, or /stop to halt your attack.\n\n"
-    "📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU\n"
-    
+            "📜 **Bot Rules - Keep It Cool!** 🌟\n"
+            "1. No spamming attacks! ⛔ Rest for 5-6 matches between DDOS.\n"
+            "2. Limit your kills! 🔫 Stay under 30-40 kills to keep it fair.\n"
+            "3. Play smart! 🎮 Avoid reports and stay low-key.\n"
+            "4. No mods allowed! 🚫 Using hacked files will get you banned.\n"
+            "5. Be respectful! 🤝 Keep communication friendly and fun.\n"
+            "6. Report issues! 🛡️ Message the owner for any problems.\n"
+            "7. Always check your command before executing! ✅\n"
+            "8. Do not attack without permission! ❌⚠️\n"
+            "9. Be aware of the consequences of your actions! ⚖️\n"
+            "10. Stay within the limits and play fair! 🤗\n"
+            "💡 Follow the rules and let's enjoy gaming together! 🎉\n"
+            "📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU\n"
             "☠️ To see the Telegram Bot Command type: /help"
             "👤 To find your user ID type: /id"
         )
@@ -420,16 +280,11 @@ def help_command(message):
         "👑 **/owner** - owner se baat kro 👑\n"
         "⏰ **/uptime** - Get bot uptime ⏱️\n"
         "📊 **/ping** - apne ping connection ko  check kro📈\n"
-        "🤝 **/help** - Show this help message 🡜n"
-   "💥 **/add** - Add a user \n"
-   "💥 **/remove** - Remove user \n"
+        "🤝 **/help** - Show this help message 🤝"
+        "👤**/add** - add kro👤\n"
     )
     bot.send_message(message.chat.id, help_message)
 
-@bot.message_handler(commands=['admincmd'])
-def welcome_plan(message):
-    user_name = message.from_user.first_name
-    
 #### DISCLAIMER ####              ✦•┈๑⋅⋯ ⋯⋅๑┈•✦                      ✦•┈๑⋅⋯ ⋯⋅๑┈•✦
 """
 **🚨 IMPORTANT: PLEASE READ CAREFULLY BEFORE USING THIS BOT 🚨**
@@ -491,4 +346,4 @@ if __name__ == "__main__":
         time.sleep(5)  # Wait before restarting ✦•┈๑⋅⋯ ⋯⋅๑┈•✦
         print(" 🔁 Restarting the Telegram bot... 🔄")
         print(" 💻 Bot is now restarting. Please wait... ⏳")
-        print(e)
+        
