@@ -48,8 +48,8 @@ AUTHORIZED_USERS = [6200422210]
 # Admin user IDs
 admin_id = ["6200422210"]
 
-# File to store allowed user IDs
-USER_FILE = "users.txt"# Admin user IDs
+# List to store allowed user IDs
+allowed_user_ids = read_users()
 
 # 🌐 Global dictionary to keep track of user attacks
 user_attacks = {}
