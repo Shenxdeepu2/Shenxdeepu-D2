@@ -116,20 +116,12 @@ def start(message):
         bot.send_message(message.chat.id, "🚫 Access Denied! bhai mere se baat kr le: @MRSHENXDEEPU")
     else:
         welcome_message = (
-            "🎮 **Welcome to the Ultimate Attack Bot!** 🚀\n\n"
-            "Use /attack `<IP>:<port>` to start an attack, or /stop to halt your attack.\n\n"
-            "📜 **Bot Rules - Keep It Cool!** 🌟\n"
-            "1. No spamming attacks! ⛔ Rest for 5-6 matches between DDOS.\n"
-            "2. Limit your kills! 🔫 Stay under 30-40 kills to keep it fair.\n"
-            "3. Play smart! 🎮 Avoid reports and stay low-key.\n"
-            "4. No mods allowed! 🚫 Using hacked files will get you banned.\n"
-            "5. Be respectful! 🤝 Keep communication friendly and fun.\n"
-            "6. Report issues! 🛡️ Message the owner for any problems.\n"
-            "7. Always check your command before executing! ✅\n"
-            "8. Do not attack without permission! ❌⚠️\n"
-            "9. Be aware of the consequences of your actions! ⚖️\n"
-            "10. Stay within the limits and play fair! 🤗\n"
-            "💡 Follow the rules and let's enjoy gaming together! 🎉\n"
+           🎮 **Welcome to Apni nasedi bot !** 🚀
+apko pta hi hoga hum h don
+Use /attack `<IP>:<port>` to start an attack, or /stop to halt your attack.
+
+📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU
+☠️ To see the Telegram Bot Command type: /help👤 To find your user ID type: /id
             "📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU\n"
             "☠️ To see the Telegram Bot Command type: /help"
             "👤 To find your user ID type: /id"
