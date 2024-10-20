@@ -45,6 +45,12 @@ bot = telebot.TeleBot(TOKEN, threaded=False)
 # 🛡️ List of authorized user IDs (replace with actual IDs)
 AUTHORIZED_USERS = [6200422210]
 
+# Admin user IDs
+admin_id = ["6200422210"]
+
+# File to store allowed user IDs
+USER_FILE = "users.txt"# Admin user IDs
+
 # 🌐 Global dictionary to keep track of user attacks
 user_attacks = {}
 
