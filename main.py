@@ -414,19 +414,16 @@ def help_command(message):
         "👑 **/owner** - owner se baat kro 👑\n"
         "⏰ **/uptime** - Get bot uptime ⏱️\n"
         "📊 **/ping** - apne ping connection ko  check kro📈\n"
-        "🤝 **/help** - Show this help message 🤝"
+        "🤝 **/help** - Show this help message 🡜n"
+   "💥 **/add** - Add a user \n"
+   "💥 **/remove** - Remove user \n"
     )
     bot.send_message(message.chat.id, help_message)
 
 @bot.message_handler(commands=['admincmd'])
 def welcome_plan(message):
     user_name = message.from_user.first_name
-    response = f'''{user_name}, Admin Commands Are Here!!:
-
-💥 /add <userId> : Add a User.
-💥 /remove <userid> Remove a User.
-💥 /allusers : Authorised Users Lists.
-
+    
 #### DISCLAIMER ####              ✦•┈๑⋅⋯ ⋯⋅๑┈•✦                      ✦•┈๑⋅⋯ ⋯⋅๑┈•✦
 """
 **🚨 IMPORTANT: PLEASE READ CAREFULLY BEFORE USING THIS BOT 🚨**
@@ -488,4 +485,4 @@ if __name__ == "__main__":
         time.sleep(5)  # Wait before restarting ✦•┈๑⋅⋯ ⋯⋅๑┈•✦
         print(" 🔁 Restarting the Telegram bot... 🔄")
         print(" 💻 Bot is now restarting. Please wait... ⏳")
-        
+        print(e)
