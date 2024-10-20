@@ -122,7 +122,7 @@ def start(message):
 
 "📞 Contact the owner on Instagram @deep.gujjar_13 and Telegram: @MRSHENXDEEPU\n"
                "☠️ To see the Telegram Bot Command type: /help"
-         "👤 To find your user ID type: /id''       
+         "👤 To find your user ID type: /id"
         )
         bot.send_message(message.chat.id, welcome_message)
 
