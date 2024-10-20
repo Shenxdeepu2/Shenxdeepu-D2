@@ -1,0 +1,10 @@
+Commands list
+
+chmod +x *
+=
+sudo apt update && sudo apt upgrade
+=
+pip install telebot
+=
+python main.py
+=
