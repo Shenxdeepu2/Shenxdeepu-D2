@@ -1,8 +1,7 @@
 name: Auto Restart and Keep Codespace Active
 
 on:
- 
-  schedule:
+ schedule:
     - cron: '* * * * *'  # Runs every minute
   workflow_dispatch:
 
